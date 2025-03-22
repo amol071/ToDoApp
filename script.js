@@ -1,93 +1,6 @@
 $(document).ready(function () {
   const taskList = $("#task-list");
 
-  // Load tasks from localStorage
-  function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    taskList.empty();
-    tasks.forEach((task, index) => {
-      const li = $(`
-          <li data-index="${index}" class="${
-        task.completed ? "completed" : ""
-      }">
-            <span class="task-text">${task.text}</span>
-            <div>
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
-              <button class="complete">${
-                task.completed ? "Undo" : "Done"
-              }</button>
-            </div>
-          </li>
-        `);
-      taskList.append(li);
-    });
-  }
-
-  // Save tasks to localStorage
-  function saveTasks() {
-    const tasks = [];
-    $("#task-list li").each(function () {
-      tasks.push({
-        text: $(this).find(".task-text").text(),
-        completed: $(this).hasClass("completed"),
-      });
-    });
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
-
-  // Add task
-  // Add task
-  $("#add-task").click(function () {
-    const taskText = $("#task-input").val().trim();
-
-    if (taskText === "") {
-      $("#task-input").addClass("error");
-      $("#error-message").text("Task cannot be empty").show();
-      return;
-    }
-
-    // Clear previous error
-    $("#task-input").removeClass("error");
-    $("#error-message").hide();
-
-    const createdAt = new Date().toISOString(); // Save ISO timestamp
-
-    const taskHTML = `
-    <li>
-      <div class="task-header">
-        <span class="task-text">${taskText}</span>
-        <div>
-          <button class="edit">Edit</button>
-          <button class="delete">Delete</button>
-          <button class="complete">Done</button>
-        </div>
-      </div>
-      <small class="timestamp">Created: ${new Date(
-        createdAt
-      ).toLocaleString()}</small>
-    </li>
-  `;
-
-    $("#task-list").append(taskHTML);
-    $("#task-input").val("");
-
-    saveTasks(); // We'll handle saving timestamps next
-  });
-
-  function saveTasks() {
-    const tasks = [];
-    $("#task-list li").each(function () {
-      tasks.push({
-        text: $(this).find(".task-text").text(),
-        completed: $(this).hasClass("completed"),
-        createdAt:
-          $(this).find(".timestamp").data("time") || new Date().toISOString(),
-      });
-    });
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
-
   function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     taskList.empty();
@@ -96,7 +9,7 @@ $(document).ready(function () {
         <li data-index="${index}" class="${task.completed ? "completed" : ""}">
           <div class="task-header">
             <span class="task-text">${task.text}</span>
-            <div>
+            <div class="buttons">
               <button class="edit">Edit</button>
               <button class="delete">Delete</button>
               <button class="complete">${
@@ -113,18 +26,81 @@ $(document).ready(function () {
     });
   }
 
-  // Clear all tasks
+  function saveTasks() {
+    const tasks = [];
+    $("#task-list li").each(function () {
+      tasks.push({
+        text: $(this).find(".task-text").text(),
+        completed: $(this).hasClass("completed"),
+        createdAt:
+          $(this).find(".timestamp").data("time") || new Date().toISOString(),
+      });
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  function toggleClearButton() {
+    if ($("#task-list li").length === 0) {
+      $("#clear-tasks").hide();
+    } else {
+      $("#clear-tasks").show();
+    }
+  }
+
+  $("#add-task").click(function () {
+    const taskText = $("#task-input").val().trim();
+
+    if (taskText === "") {
+      $("#task-input").addClass("error");
+      $("#error-message").text("Task cannot be empty").show();
+      return;
+    }
+
+    if (taskText.length < 2) {
+      $("#task-input").addClass("error");
+      $("#error-message").text("Task must be at least 2 characters").show();
+      return;
+    }
+
+    $("#task-input").removeClass("error");
+    $("#error-message").hide();
+
+    const createdAt = new Date().toISOString();
+
+    const taskHTML = `
+      <li>
+        <div class="task-header">
+          <span class="task-text">${taskText}</span>
+          <div class="buttons">
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+            <button class="complete">Done</button>
+          </div>
+        </div>
+        <small class="timestamp" data-time="${createdAt}">
+          Created: ${new Date(createdAt).toLocaleString()}
+        </small>
+      </li>
+    `;
+
+    $("#task-list").append(taskHTML);
+    toggleClearButton();
+    $("#task-input").val("");
+    saveTasks();
+  });
+
   $("#clear-tasks").click(function () {
     if (confirm("Are you sure you want to clear all tasks?")) {
-      localStorage.removeItem("tasks"); // Remove from storage
-      $("#task-list").empty(); // Clear from DOM
+      localStorage.removeItem("tasks");
+      $("#task-list").empty();
+      toggleClearButton();
     }
   });
 
-  // Delegate edit, delete, complete buttons
   taskList.on("click", ".delete", function () {
     $(this).closest("li").remove();
     saveTasks();
+    toggleClearButton();
   });
 
   taskList.on("click", ".edit", function () {
@@ -161,6 +137,6 @@ $(document).ready(function () {
     saveTasks();
   });
 
-  // Load on startup
   loadTasks();
+  toggleClearButton();
 });

@@ -1,25 +1,36 @@
+/* Base reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    padding: 40px;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f0f2f5;
     display: flex;
     justify-content: center;
+    padding: 30px;
 }
 
 .container {
     background: #fff;
-    padding: 30px;
+    padding: 24px;
     border-radius: 12px;
-    width: 600px;
-    max-width: 90vw;
-    /* Makes it shrink on small screens */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .input-group {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
 }
 
@@ -27,53 +38,66 @@ body {
     flex: 1;
     padding: 12px;
     font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     min-width: 200px;
 }
 
 #add-task {
     padding: 12px 20px;
     font-size: 16px;
-}
-
-button {
-    padding: 8px 14px;
-    font-size: 14px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
 }
 
+#add-task:hover {
+    background-color: #0056b3;
+}
+
+button {
+    font-size: 14px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.clear-btn {
+    background-color: #ff4d4d;
+    color: #fff;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.clear-btn:hover {
+    background-color: #cc0000;
+}
+
+#error-message {
+    color: red;
+    font-size: 14px;
+    margin: 5px 0 10px;
+    display: none;
+}
+
+#task-input.error {
+    border: 2px solid red;
+}
+
+#task-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
 #task-list li {
-    list-style: none;
-    padding: 14px;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-#task-list li>.task-text {
-    flex-grow: 1;
-    font-size: 16px;
-    min-width: 150px;
-}
-
-#task-list li>div {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.completed {
-    text-decoration: line-through;
-    color: gray;
-}
-
-.timestamp {
-    color: #888;
-    font-size: 12px;
-    margin-top: 4px;
-    display: block;
+    background: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
 }
 
 .task-header {
@@ -84,43 +108,60 @@ button {
     gap: 10px;
 }
 
-
-#task-input.error {
-    border: 2px solid red;
+.task-text {
+    font-size: 16px;
+    flex-grow: 1;
 }
 
-#error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    display: none;
+#task-list li .buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.completed .task-text {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.timestamp {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* Make the delete button red */
+button.delete {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+button.delete:hover {
+    background-color: #cc0000;
 }
 
 
-/* 🌐 Mobile responsive tweaks */
+/* Responsive */
 @media (max-width: 600px) {
-    .container {
-        padding: 20px;
-    }
-
     .input-group {
         flex-direction: column;
     }
 
-    #task-input,
     #add-task {
         width: 100%;
     }
 
-    #task-list li {
+    #task-input {
+        width: 100%;
+    }
+
+    .task-header {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    #task-list li>div {
+    .buttons {
         width: 100%;
         justify-content: flex-start;
-        flex-wrap: wrap;
     }
 }
