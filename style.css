@@ -1,0 +1,126 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 600px;
+    max-width: 90vw;
+    /* Makes it shrink on small screens */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+#task-input {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    min-width: 200px;
+}
+
+#add-task {
+    padding: 12px 20px;
+    font-size: 16px;
+}
+
+button {
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#task-list li {
+    list-style: none;
+    padding: 14px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#task-list li>.task-text {
+    flex-grow: 1;
+    font-size: 16px;
+    min-width: 150px;
+}
+
+#task-list li>div {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.timestamp {
+    color: #888;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+#task-input.error {
+    border: 2px solid red;
+}
+
+#error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+
+/* 🌐 Mobile responsive tweaks */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    #task-input,
+    #add-task {
+        width: 100%;
+    }
+
+    #task-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #task-list li>div {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
